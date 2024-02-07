@@ -1,0 +1,201 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.example</groupId>
+        <artifactId>project</artifactId>
+        <version>1.0.1</version>
+    </parent>
+
+    <artifactId>custom_new_project</artifactId>
+    <packaging>jar</packaging>
+
+    <name>custom_new_project</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>core_module</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.epam.reportportal</groupId>
+            <artifactId>agent-java-junit</artifactId>
+            <version>5.1.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.1.1</version>
+            <type>maven-plugin</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.epam.reportportal</groupId>
+            <artifactId>logger-java-logback</artifactId>
+            <version>5.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.10</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/br.eti.kinoshita/testlink-java-api -->
+        <dependency>
+            <groupId>br.eti.kinoshita</groupId>
+            <artifactId>testlink-java-api</artifactId>
+            <version>1.9.20-1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.aeonbits.owner/owner -->
+        <dependency>
+            <groupId>org.aeonbits.owner</groupId>
+            <artifactId>owner</artifactId>
+            <version>1.0.12</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.pragmatists</groupId>
+            <artifactId>JUnitParams</artifactId>
+            <version>1.0.5</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.nordstrom.tools/junit-foundation -->
+        <dependency>
+            <groupId>com.nordstrom.tools</groupId>
+            <artifactId>junit-foundation</artifactId>
+            <version>17.0.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20220320</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-failsafe-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.2.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.21</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+
+        <plugins>
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                <version>3.0.0-M5</version>-->
+<!--                <configuration>-->
+<!--                    <parallel>all</parallel>-->
+<!--                    <argLine>-Xmx512m</argLine>-->
+<!--                    <argLine>-XX:MaxPermSize=256m</argLine>-->
+<!--                    <threadCount>3</threadCount>-->
+<!--                    &lt;!&ndash; <parallel>methods</parallel>&ndash;&gt;-->
+<!--                    &lt;!&ndash;              <parallel>classes</parallel>&ndash;&gt;-->
+<!--                    <testFailureIgnore>true</testFailureIgnore>-->
+<!--                    <rerunFailingTestsCount>0</rerunFailingTestsCount>-->
+
+<!--                </configuration>-->
+
+<!--            </plugin>-->
+            <!-- This plugin provides the path to the Java agent (used in surefire argLine part) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>getClasspathFilenames</id>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+<!--                        &lt;!&ndash; Activate the use of TCP to transmit events to the plugin &ndash;&gt;-->
+<!--                        <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/>-->
+                    <argLine>-javaagent:${com.nordstrom.tools:junit-foundation:jar}</argLine>
+<!--                   <parallel>all</parallel>-->
+<!--                    <argLine>-Xmx512m</argLine>-->
+<!--                    <argLine>-XX:MaxPermSize=256m</argLine>-->
+<!--                    <threadCount>1</threadCount>-->
+<!--                    <forkCount>1</forkCount>-->
+<!--                    &lt;!&ndash; <parallel>methods</parallel>&ndash;&gt;-->
+<!--                    &lt;!&ndash;              <parallel>classes</parallel>&ndash;&gt;-->
+                    <testFailureIgnore>true</testFailureIgnore>
+<!--                    <skipTests>true</skipTests>-->
+<!--                    <rerunFailingTestsCount>0</rerunFailingTestsCount>-->
+<!--                    <argLine>-->
+<!--                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"-->
+<!--                    </argLine>-->
+<!--&lt;!&ndash;                    <properties>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <property>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <name>listener</name>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <value>io.qameta.allure.junit4.AllureJunit4</value>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </property>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </properties>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <systemProperties>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <property>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <name>allure.results.directory</name>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <value>${project.build.directory}/allure-results</value>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </property>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <property>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <name>allure.link.issue.pattern</name>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <value>https://example.org/issue/{}</value>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </property>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </systemProperties>&ndash;&gt;-->
+                </configuration>
+                <dependencies>
+                    <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>1.9.21</version>
+                    </dependency>
+
+                </dependencies>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources/properties</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>
